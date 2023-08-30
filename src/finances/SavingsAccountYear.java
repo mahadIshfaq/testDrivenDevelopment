@@ -6,7 +6,7 @@ public class SavingsAccountYear {
 	private int interestRate = 0;
 	private int capitalGainsAmount = 0;
 	private int startingPrincipal= 0;
-	private int  totalWithdrawn= 0;
+	private int  totalWithdrawnExceptCapitalGainsTax= 0;
 	
 	
 	public SavingsAccountYear(int startingBalance,int startingPrincipal, int interestRate) {
@@ -22,8 +22,8 @@ public class SavingsAccountYear {
 	}
 
 	public int endingBalance(int capitalGainsTaxRate) {
-		 int modifiedStart= startingBalance-totalWithdrawn()- capitalGainsTaxIncurred(capitalGainsTaxRate);
-		return modifiedStart+(modifiedStart*interestRate/100);
+		 int modifiedStart= startingBalance-totalWithdrawnExceptCapitalGainsTax()- capitalGainsTaxIncurred(capitalGainsTaxRate);
+		return modifiedStart+interestEarned(capitalGainsTaxRate);
 	}
 	
 	public int startingBalance() {
@@ -36,27 +36,32 @@ public class SavingsAccountYear {
 	}
 
 	public void withdraw(int amount) {
-		this.totalWithdrawn+=amount;
+		this.totalWithdrawnExceptCapitalGainsTax+=amount;
 	}
 
 	public int startingPrincipal() {
 		
 		return startingBalance-capitalGainsAmount;
 	}
+	
+	public int totalWithdrawn(int capitalGainsTax) {
+		// TODO Auto-generated method stub
+		return totalWithdrawnExceptCapitalGainsTax()+ capitalGainsTaxIncurred(capitalGainsTax);
+	}
 
 	public int endingPrincipal() {
-		int result= startingPrincipal()-totalWithdrawn();
+		int result= startingPrincipal()-totalWithdrawnExceptCapitalGainsTax();
 		return Math.max(0, result);
 	}
 
-	public int totalWithdrawn() {
+	public int totalWithdrawnExceptCapitalGainsTax() {
 		
-		return this.totalWithdrawn;
+		return this.totalWithdrawnExceptCapitalGainsTax;
 	}
 
 	public int capitalGainsWithdrawn() {
 	
-		int result= -1 * (startingPrincipal()- totalWithdrawn());
+		int result= -1 * (startingPrincipal()- totalWithdrawnExceptCapitalGainsTax());
 		return Math.max(0, result);
 	}
 
@@ -71,6 +76,18 @@ public class SavingsAccountYear {
 	
 		return startingBalance-startingPrincipal;
 	}
+
+	public int endingCapitalGains() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int interestEarned(int capitalGainsTaxRate) {
+		// TODO Auto-generated method stub
+		return	(startingBalance-totalWithdrawnExceptCapitalGainsTax()- capitalGainsTaxIncurred(capitalGainsTaxRate)) * interestRate/100;
+	}
+
+
 
 
 }

@@ -51,7 +51,7 @@ public void multipleWithdrawalsInAYearAreTotaled() {
 	SavingsAccountYear year= newAccount();
 	year.withdraw(1000);
 	year.withdraw(2000);
-	assertEquals(3000,year.totalWithdrawn());
+	assertEquals(3000,year.totalWithdrawn(25));
 	
 }
 
@@ -91,7 +91,7 @@ public void capitalGainsTaxesDonotEarnIntereset() {
 	year.withdraw(1000);
 	assertEquals("capital gains withdrawn",1000,year.capitalGainsWithdrawn());
 	assertEquals("capital gains withdrawn",333,year.capitalGainsTaxIncurred(25));
-//	assertEquals("total withdrawn",1333,year.totalWithdrawnIncludingCapitalGains(25));
+	assertEquals("total withdrawn",1333,year.totalWithdrawn(25));
 	assertEquals("interest earned",866,year.interestEarned(25));
 	
 }
@@ -114,16 +114,25 @@ public void totalWithdrawnincludingCapitalGains() {
 	SavingsAccountYear year= new SavingsAccountYear(10000,0,10);
 	year.withdraw(1000);
 	assertEquals("capital gains withdrawn",333,year.capitalGainsTaxIncurred(25));
-	assertEquals("total withdrawn",1333,year.totalWithdrawnIncludingCapitalGainsTaxWithdrawn(25));
+	assertEquals("total withdrawn",1333,year.totalWithdrawn(25));
 }
 
 
 @Test
-@Ignore
 public void endingCapitalGainsIncludesInterestEarned() {
 	SavingsAccountYear year= new SavingsAccountYear(10000,3000,10);
-	 assertEquals(7000,year.startingCapitalGains());
-	 assertEquals(4000,year.endingCapitalGains());
+	 assertEquals("starting capital gains",7000,year.startingCapitalGains());
+	 assertEquals("ending capital gains",8000,year.endingCapitalGains(25));
+}
+
+@Test
+public void endingCapitalGainsIncludesCapitalGainsWithdrawn() {
+	SavingsAccountYear year= new SavingsAccountYear(10000,0,10);
+	 assertEquals("starting capital gains",10000,year.startingCapitalGains());
+	 year.withdraw(1000);
+	 assertEquals("capital gains tax",333,year.capitalGainsTaxIncurred(25));
+	 assertEquals("interest earned",866,year.interestEarned(25));
+	 assertEquals("ending capital gains",9533,year.endingCapitalGains(25));
 }
 
 @Test

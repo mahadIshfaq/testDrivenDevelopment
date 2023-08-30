@@ -36,7 +36,7 @@ public class StockMarketYear {
 		this.totalWithdrawals+=amount;
 	}
 	
-	public int capitalGainsWithdrawn() {
+	private int capitalGainsWithdrawn() {
 		
 		int result= -1 * (startingPrincipal()- totalWithdrawals);
 		return Math.max(0, result);
@@ -61,9 +61,6 @@ public class StockMarketYear {
 		return Math.max(0, result);
 	}
 	
-//	public int endingCapitalGains(int capitalGainsTaxRate) {
-//		return endingBalance(capitalGainsTaxRate)-endingPrincipal();
-//	}
 	
 	public int endingBalance(int capitalGainsTaxRate) {
 		 int modifiedStart= startingBalance-totalWithdrawn(capitalGainsTaxRate);
